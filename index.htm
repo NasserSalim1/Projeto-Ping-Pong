@@ -18,49 +18,68 @@
         const canvasEl = document.querySelector("canvas"),
          canvasCtx = canvasEl.getContext("2d");
         
-    const lineWhidth = 15 // Cria-se uma variável para armazenar esse valor para possíveis futuras mudanças    
+        const lineWhidth = 15 // Cria-se uma variável para armazenar esse valor para possíveis futuras mudanças    
 
-    function setup(){
-        canvasEl.width = canvasCtx.width = window.innerWidth // Define todo o tamnho da tela  
-        canvasEl.height = canvasCtx.height  = window.innerHeight // Define todo a altura da tela
-    }
-    
-    function draw(){
+        const field = { // Ao invés de sair espalhando funções pelo código, vou consentrar toda a lógica do código dentro de um objeto 
+            w: window.innerWidth,  
+            h: window.innerHeight,
+            draw : function(){ // Método do objeto, é como se fosse uma função
+                // Desenho do campo
+                canvasCtx.fillStyle = "#286047" // define a cor da figura
+                canvasCtx.fillRect(0,0, this.w, this.h) // Desenha o retângulo -- (0,0) Significa que começa no canto superior esquedo da tela (isso é default), (window.innerWidth, window.innerHeight) Diz que vamos ocupar 100% da tela    
+            }
+        }
+
+        const line = {
+            w: 15,
+            h: field.h,
+            draw : function(){
+                // Desenho da linha central
+                canvasCtx.fillStyle = "#ffffff"
+                canvasCtx.fillRect(
+                    field.w/2 - this.w/2,
+                    0, 
+                    this.w, 
+                    this.h
+                    )
+            }
+        }
+
+        function setup(){
+            canvasEl.width = canvasCtx.width = field.w // Posso usar as propriedades do objeto para paltar outros comandos do código (field.w)  
+            canvasEl.height = canvasCtx.height  = field.h // Posso usar as propriedades do objeto para paltar outros comandos do código (field.h)
+        }
         
-        // Desenho do campo
-        canvasCtx.fillStyle = "#286047" // define a cor da figura
-        canvasCtx.fillRect(0,0, window.innerWidth, window.innerHeight) // Desenha o retângulo -- (0,0) Significa que começa no canto superior esquedo da tela (isso é default), (window.innerWidth, window.innerHeight) Diz que vamos ocupar 100% da tela
-    
-        // Tudo que vier na sequência será branco
-        canvasCtx.fillStyle = "#ffffff" 
+        function draw(){
+            field.draw()
 
-        // Desenho da linha central
-        canvasCtx.fillRect(window.innerWidth/2 - lineWhidth/2, 0, lineWhidth, window.innerHeight)
+            line.draw()
+            // Tudo que vier na sequência será branco 
+            
+            // Desenho da raquete esquerda
+            canvasCtx.fillRect(10, 480, lineWhidth, 200) // A altura do desenho n importa no momento pois a requete irá se mover com o mouse mais para frente
 
-        // Desenho da raquete esquerda
-        canvasCtx.fillRect(10, 480, lineWhidth, 200) // A altura do desenho n importa no momento pois a requete irá se mover com o mouse mais para frente
+            // Desenho da raquete direita
+            canvasCtx.fillRect(window.innerWidth - lineWhidth - 10, 200, lineWhidth, 200) // A altura do desenho n importa no momento pois a requete irá se mover com o mouse mais para frente
+            
+            // Desenho da bolinha
 
-        // Desenho da raquete direita
-        canvasCtx.fillRect(window.innerWidth - lineWhidth - 10, 200, lineWhidth, 200) // A altura do desenho n importa no momento pois a requete irá se mover com o mouse mais para frente
-        
-        // Desenho da bolinha
+            canvasCtx.beginPath()
+            canvasCtx.arc(200, 300, 20, 0, 2*Math.PI, false)
+            canvasCtx.fill()
 
-        canvasCtx.beginPath()
-        canvasCtx.arc(200, 300, 20, 0, 2*Math.PI, false)
-        canvasCtx.fill()
+            // Desenho do placar
+            canvasCtx.font = "bold 72px Arial"
+            canvasCtx.textAlign = 'center'
+            canvasCtx.textBaseline = 'top'
+            canvasCtx.fillStyle = '#01341d'
+            canvasCtx.fillText('3', window.innerWidth/4, 50)
+            canvasCtx.fillText('1', window.innerWidth/4 + window.innerWidth/2, 50)
 
-        // Desenho do placar
-        canvasCtx.font = "bold 72px Arial"
-        canvasCtx.textAlign = 'center'
-        canvasCtx.textBaseline = 'top'
-        canvasCtx.fillStyle = '#01341d'
-        canvasCtx.fillText('3', window.innerWidth/4, 50)
-        canvasCtx.fillText('1', window.innerWidth/4 + window.innerWidth/2, 50)
+        }
 
-    }
-
-    setup()
-    draw()
+        setup()
+        draw()
     </script>
 </body>
 </html>
