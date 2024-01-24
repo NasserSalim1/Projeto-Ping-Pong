@@ -21,7 +21,7 @@
             canvasCtx = canvasEl.getContext("2d"),
             gapX = 10
 
-
+        const mouse = {x: 0, y: 0}
 
         const field = { // Ao invés de sair espalhando funções pelo código, vou consentrar toda a lógica do código dentro de um objeto 
             w: window.innerWidth,
@@ -50,14 +50,19 @@
 
         const leftPaddle = {
             x: gapX,
-            y: 100,
+            y: 0,
             w: line.w,
             h: 200,
+            _move: function(){
+                this.y = mouse.y - this.h / 2
+            },
             draw: function () {
                 canvasCtx.fillStyle = "#ffffff"
                 // Desenho da raquete esquerda 
                 canvasCtx.fillRect(this.x, this.y, this.w, this.h) // A altura do desenho n importa no momento pois a requete irá se mover com o mouse mais para frente
-            }
+            
+                this._move()
+            },
         }
 
         const rightPaddle = {
@@ -89,7 +94,7 @@
                 canvasCtx.fill()
 
                 this._move()
-            }
+            },
         }
 
         const score = {
@@ -144,6 +149,14 @@
 
         setup()
         main()
+
+        canvasEl.addEventListener('mousemove', function(e){
+            mouse.x = e.pageX
+            mouse.y = e.pageY
+        })
+
+
+
     </script>
 </body>
 
