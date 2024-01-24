@@ -21,7 +21,7 @@
             canvasCtx = canvasEl.getContext("2d"),
             gapX = 10
 
-        const mouse = {x: 0, y: 0}
+        const mouse = { x: 0, y: 0 }
 
         const field = { // Ao invés de sair espalhando funções pelo código, vou consentrar toda a lógica do código dentro de um objeto 
             w: window.innerWidth,
@@ -53,14 +53,14 @@
             y: 0,
             w: line.w,
             h: 200,
-            _move: function(){
+            _move: function () {
                 this.y = mouse.y - this.h / 2
             },
             draw: function () {
                 canvasCtx.fillStyle = "#ffffff"
                 // Desenho da raquete esquerda 
                 canvasCtx.fillRect(this.x, this.y, this.w, this.h) // A altura do desenho n importa no momento pois a requete irá se mover com o mouse mais para frente
-            
+
                 this._move()
             },
         }
@@ -70,7 +70,7 @@
             y: 200,
             w: line.w,
             h: 200,
-            _move: function(){
+            _move: function () {
                 this.y = ball.y
             },
             draw: function () {
@@ -82,13 +82,31 @@
         }
 
         const ball = {
-            x: 480,
-            y: 60,
+            x: 0,
+            y: 0,
             r: 20,
             speed: 5,
+            directionX: 1,
+            directionY: 1,
+            _calcPosition() {
+                // Verifica as laterias superiores e inferiores do campo 
+                if (
+                    (this.y - this.r < 0 && this.directionY < 0) ||
+                    (this.y > field.h - this.r && this.directionY > 0)
+                ){
+                    // Rebate a bola invertendo o sinal do eixo Y
+                    this._reverseY()
+                }
+            },
+            _reverseX: function () {
+                this.directionX *= -1
+            },
+            _reverseY: function () {
+                this.directionY *= -1
+            },
             _move: function () { // Função dew movimento da bolinha (É tipo um while controlado)
-                this.x += 1 * this.speed
-                this.y += 1 * this.speed
+                this.x += this.directionX * this.speed
+                this.y += this.directionY * this.speed
             },
             draw: function () {
                 canvasCtx.fillStyle = "#ffffff"
@@ -97,6 +115,7 @@
                 canvasCtx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false)
                 canvasCtx.fill()
 
+                this._calcPosition()
                 this._move()
             },
         }
@@ -144,9 +163,9 @@
                     return window.setTimeout(callback, 1000 / 60)
                 }
             )
-        })() 
+        })()
 
-        function main(){
+        function main() {
             animateFrame(main)
             draw()
         }
@@ -154,7 +173,7 @@
         setup()
         main()
 
-        canvasEl.addEventListener('mousemove', function(e){
+        canvasEl.addEventListener('mousemove', function (e) {
             mouse.x = e.pageX
             mouse.y = e.pageY
 
