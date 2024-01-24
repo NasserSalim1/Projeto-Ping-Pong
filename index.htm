@@ -70,11 +70,15 @@
             y: 200,
             w: line.w,
             h: 200,
+            _move: function(){
+                this.y = ball.y
+            },
             draw: function () {
                 canvasCtx.fillStyle = "#ffffff"
                 // Desenho da raquete esquerda 
                 canvasCtx.fillRect(this.x, this.y, this.w, this.h) // A altura do desenho n importa no momento pois a requete irá se mover com o mouse mais para frente
-            }
+                this._move()
+            },
         }
 
         const ball = {
@@ -153,6 +157,8 @@
         canvasEl.addEventListener('mousemove', function(e){
             mouse.x = e.pageX
             mouse.y = e.pageY
+
+            // console.log (mouse)
         })
 
 
