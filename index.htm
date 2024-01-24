@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping Pong</title>
+    <style>
+        *{
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas></canvas>
+    <script>
+        const canvasEl = document.querySelector("canvas"),
+         canvasCtx = canvasEl.getContext("2d");
+    
+    function setup(){
+        canvasEl.width = canvasCtx.width = window.innerWidth // Define todo o tamnho da tela  
+        canvasEl.height = canvasCtx.height  = window.innerHeight // Define todo a altura da tela
+    }
+    
+    function draw(){
+        canvasCtx.fillStyle = "#286047" // define a cor da figura
+        canvasCtx.fillRect(0,0, window.innerWidth, window.innerHeight) // Desenha o retângulo -- (0,0) Significa que começa no canto superior esquedo da tela (isso é default), (window.innerWidth, window.innerHeight) Diz que vamos ocupar 100% da tela
+    }
+
+    setup()
+    draw()
+    </script>
+</body>
+</html>
