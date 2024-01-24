@@ -31,8 +31,10 @@
         canvasCtx.fillStyle = "#286047" // define a cor da figura
         canvasCtx.fillRect(0,0, window.innerWidth, window.innerHeight) // Desenha o retângulo -- (0,0) Significa que começa no canto superior esquedo da tela (isso é default), (window.innerWidth, window.innerHeight) Diz que vamos ocupar 100% da tela
     
+        // Tudo que vier na sequência será branco
+        canvasCtx.fillStyle = "#ffffff" 
+
         // Desenho da linha central
-        canvasCtx.fillStyle = "#ffffff"
         canvasCtx.fillRect(window.innerWidth/2 - lineWhidth/2, 0, lineWhidth, window.innerHeight)
 
         // Desenho da raquete esquerda
@@ -40,6 +42,21 @@
 
         // Desenho da raquete direita
         canvasCtx.fillRect(window.innerWidth - lineWhidth - 10, 200, lineWhidth, 200) // A altura do desenho n importa no momento pois a requete irá se mover com o mouse mais para frente
+        
+        // Desenho da bolinha
+
+        canvasCtx.beginPath()
+        canvasCtx.arc(200, 300, 20, 0, 2*Math.PI, false)
+        canvasCtx.fill()
+
+        // Desenho do placar
+        canvasCtx.font = "bold 72px Arial"
+        canvasCtx.textAlign = 'center'
+        canvasCtx.textBaseline = 'top'
+        canvasCtx.fillStyle = '#01341d'
+        canvasCtx.fillText('3', window.innerWidth/4, 50)
+        canvasCtx.fillText('1', window.innerWidth/4 + window.innerWidth/2, 50)
+
     }
 
     setup()
