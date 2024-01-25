@@ -67,11 +67,19 @@
 
         const rightPaddle = {
             x: field.w - line.w - gapX,
-            y: 200,
+            y: 0,
             w: line.w,
             h: 200,
+            speed: 5,
             _move: function () {
-                this.y = ball.y
+                if(this.y + this.h / 2 < ball.y + ball.r){
+                    this.y += this.speed
+                }else{
+                    this.y -= this.speed
+                }
+            },
+            speedUp:function(){
+                this.speed += 2
             },
             draw: function () {
                 canvasCtx.fillStyle = "#ffffff"
@@ -82,8 +90,8 @@
         }
 
         const ball = {
-            x: 0,
-            y: 0,
+            x: field.w/2, 
+            y: field.h/2,
             r: 20,
             speed: 5,
             directionX: 1,
@@ -101,7 +109,21 @@
                     } else{
                         // Pontua jogador 1
                         score.increaseHuman()
-                        this._pointUp
+                        this._pointUp()
+                    }
+                }
+
+                // Verifica se o jogador 2 fez ponto (x < 0)
+
+                if(this.x < this.r + leftPaddle.w + gapX){
+                    // Verifica se a raquete esquerda ta na posição Y da bola
+                    if(this.y + this.r > leftPaddle.y && this.y - this.r < leftPaddle.y + leftPaddle.h){
+                        // Rebate a bola invertendo o sinal de X
+                        this._reverseX()
+                    }else{
+                        // Pontua jogador 2
+                        score.increaseComputer()
+                        this._pointUp()
                     }
                 }
 
@@ -120,10 +142,17 @@
             _reverseY: function () {
                 this.directionY *= -1
             },
+            _speedUp: function(){
+                this.speed += 3 
+            },
             _pointUp: function(){
+                // Aumenta a velocidade da raquete do PC e da bolinha                
+                this._speedUp()  
+                rightPaddle.speedUp()
+
                 // Volta a bolinha para o centro do campo
                 this.x = field.w/2 
-                this.y = field.h/2 
+                this.y = field.h/2
             },
             _move: function () { // Função dew movimento da bolinha (É tipo um while controlado)
                 this.x += this.directionX * this.speed
@@ -142,8 +171,8 @@
         }
 
         const score = {
-            human: 1,
-            computer: 2,
+            human: 0,
+            computer: 0,
             increaseHuman: function(){
                 this.human++
             },
